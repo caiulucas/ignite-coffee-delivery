@@ -49,6 +49,7 @@ export const Category = styled.span`
   color: ${({ theme }) => theme['yellow-dark']};
   text-transform: uppercase;
   font-weight: 700;
+  font-size: 0.625rem;
 
   padding: 0.25rem 0.5rem;
   border-radius: 1rem;
