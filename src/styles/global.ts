@@ -9,7 +9,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background-color: ${({ theme }) => theme.background}
+    background-color: ${({ theme }) => theme.background};
   }
 
   body, button, input {
@@ -19,5 +19,10 @@ export const GlobalStyles = createGlobalStyle`
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Baloo 2', sans-serif;
     font-weight: 800;
+    line-height: 130%;
+  }
+
+  p, span {
+    line-height: 130%;
   }
 `
