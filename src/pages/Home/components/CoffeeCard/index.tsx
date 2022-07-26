@@ -3,11 +3,11 @@ import {
   Category,
   CoffeeContainer,
   PricingContainer,
-  Spinner,
 } from './styles'
 
+import { ShoppingCart } from 'phosphor-react'
 import ExpressoPng from '../../../../assets/expresso.png'
-import { Minus, Plus, ShoppingCart } from 'phosphor-react'
+import { Spinner } from '../../../../components/Spinner'
 
 export function CoffeeCard() {
   return (
@@ -23,16 +23,7 @@ export function CoffeeCard() {
         </p>
 
         <div>
-          <Spinner>
-            <button>
-              <Minus />
-            </button>
-            <p>1</p>
-            <button>
-              <Plus />
-            </button>
-          </Spinner>
-
+          <Spinner size="l" />
           <BuyButton>
             <ShoppingCart weight="fill" />
           </BuyButton>
