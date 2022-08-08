@@ -30,16 +30,11 @@ export const CoffeeContainer = styled.div`
     font-size: 0.875rem;
     text-align: center;
   }
+`
 
-  > div {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-
-    margin-top: 2rem;
-
-    gap: 1.5rem;
-  }
+export const CategoryContainer = styled.div`
+  display: flex;
+  gap: 0.25rem;
 `
 
 export const Category = styled.span`
@@ -56,6 +51,14 @@ export const Category = styled.span`
 `
 
 export const PricingContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 2rem;
+
+  gap: 1.5rem;
+
   p {
     font-family: 'Baloo 2', sans-serif;
     font-weight: 800;
