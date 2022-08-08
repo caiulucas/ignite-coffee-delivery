@@ -18,4 +18,6 @@ export const defaultTheme = {
   yellow: '#DBAC2C',
   'yellow-light': '#F1E9C9',
   'yellow-dark': '#C47F17',
+
+  'gradient-yellow-purple': '#DBAC2C, #8047F8',
 }
