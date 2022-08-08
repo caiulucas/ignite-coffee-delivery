@@ -1,25 +1,45 @@
 import {
   BuyButton,
   Category,
+  CategoryContainer,
   CoffeeContainer,
   PricingContainer,
 } from './styles'
 
 import { ShoppingCart } from 'phosphor-react'
-import ExpressoPng from '../../../../assets/expresso.png'
 import { Spinner } from '../../../../components/Spinner'
+import { formatCurrency } from '../../../../utils/formatCurrency'
 
-export function CoffeeCard() {
+interface Coffee {
+  name: string
+  description: string
+  image: string
+  price: number
+  categories: string[]
+}
+
+interface CoffeeCardProps {
+  coffee: Coffee
+}
+
+export function CoffeeCard({ coffee }: CoffeeCardProps) {
   return (
     <CoffeeContainer>
-      <img src={ExpressoPng} alt="Expresso Coffee" />
-      <Category>Tradicional</Category>
-      <h3>Expresso tradicional</h3>
-      <p>O tradicional café feito com água quente e grãos moídos</p>
+      <img src={coffee.image} alt={coffee.name} />
+
+      <CategoryContainer>
+        {coffee.categories.map((category) => (
+          <Category key={category}>{category}</Category>
+        ))}
+      </CategoryContainer>
+
+      <h3>{coffee.name}</h3>
+      <p>{coffee.description}</p>
 
       <PricingContainer>
         <p>
-          <span>R$ </span>9,90
+          <span>R$ </span>
+          {formatCurrency(coffee.price)}
         </p>
 
         <div>

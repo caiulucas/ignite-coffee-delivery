@@ -1,4 +1,10 @@
-import { Coffee, IconProps, Package, ShoppingCart, Timer } from 'phosphor-react'
+import {
+  Coffee as CoffeeIcon,
+  IconProps,
+  Package,
+  ShoppingCart,
+  Timer,
+} from 'phosphor-react'
 import {
   Benefit,
   BenefitsContainer,
@@ -9,9 +15,10 @@ import {
   Variant,
 } from './styles'
 
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import CoffeeHeroPng from '../../assets/coffee-hero.png'
 import { CoffeeCard } from './components/CoffeeCard'
+import { getAllCoffees } from '../../services/api'
 
 interface BenefitProps {
   text: string
@@ -37,12 +44,33 @@ const benefits: BenefitProps[] = [
   },
   {
     text: 'O café chega fresquinho até você',
-    icon: Coffee,
+    icon: CoffeeIcon,
     variant: 'purple',
   },
 ]
 
+interface Coffee {
+  id: string
+  name: string
+  description: string
+  image: string
+  price: number
+  categories: string[]
+}
+
 export function Home() {
+  const [coffees, setCoffees] = useState<Coffee[]>([])
+
+  useEffect(() => {
+    async function loadData() {
+      const response = await getAllCoffees()
+      console.log(response)
+      setCoffees(response)
+    }
+
+    loadData()
+  }, [])
+
   return (
     <HomeContainer>
       <Greetings>
@@ -74,11 +102,9 @@ export function Home() {
 
       <h2>Nossos cafés</h2>
       <CoffeesContainer>
-        <CoffeeCard />
-        <CoffeeCard />
-        <CoffeeCard />
-        <CoffeeCard />
-        <CoffeeCard />
+        {coffees.map((coffee) => (
+          <CoffeeCard key={coffee.id} coffee={coffee} />
+        ))}
       </CoffeesContainer>
     </HomeContainer>
   )
