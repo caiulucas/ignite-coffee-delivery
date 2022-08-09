@@ -24,6 +24,8 @@ export const SpinnerContainer = styled.div<SpinnerContainerProps>`
   border-radius: 6px;
 
   p {
+    margin: 0;
+    line-height: 0;
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
     font-weight: 400;
@@ -39,6 +41,11 @@ export const SpinnerContainer = styled.div<SpinnerContainerProps>`
     height: 2rem;
 
     color: ${({ theme }) => theme.purple};
+    transition: all 0.2s;
+
+    &:hover {
+      color: ${({ theme }) => theme['purple-dark']};
+    }
 
     svg {
       width: 0.875rem;
