@@ -52,6 +52,12 @@ export const CoffeeController = styled.div`
     text-transform: uppercase;
     color: ${({ theme }) => theme['base-text']};
 
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: ${({ theme }) => theme['base-hover']};
+    }
+
     svg {
       width: 1rem;
       height: 1rem;
