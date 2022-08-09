@@ -9,8 +9,11 @@ import {
 import { ShoppingCart } from 'phosphor-react'
 import { Spinner } from '../../../../components/Spinner'
 import { formatCurrency } from '../../../../utils/formatCurrency'
+import { useCart } from '../../../../contexts/CartContext'
+import { useState } from 'react'
 
 interface Coffee {
+  id: string
   name: string
   description: string
   image: string
@@ -23,6 +26,18 @@ interface CoffeeCardProps {
 }
 
 export function CoffeeCard({ coffee }: CoffeeCardProps) {
+  const { add } = useCart()
+
+  const [quantity, setQuantity] = useState(0)
+
+  function handleAddCoffee() {
+    add(coffee, quantity)
+  }
+
+  function handleChangeQuantity(value: number) {
+    setQuantity(value)
+  }
+
   return (
     <CoffeeContainer>
       <img src={coffee.image} alt={coffee.name} />
@@ -43,8 +58,12 @@ export function CoffeeCard({ coffee }: CoffeeCardProps) {
         </p>
 
         <div>
-          <Spinner size="l" />
-          <BuyButton>
+          <Spinner
+            size="l"
+            value={quantity}
+            changeQuantity={handleChangeQuantity}
+          />
+          <BuyButton onClick={handleAddCoffee}>
             <ShoppingCart weight="fill" />
           </BuyButton>
         </div>
