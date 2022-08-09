@@ -2,6 +2,7 @@ import { Cart, HeaderContainer, Location } from './styles'
 
 import LogoSvg from '../../assets/logo.svg'
 import { MapPin, ShoppingCart } from 'phosphor-react'
+import { Link } from 'react-router-dom'
 
 export function Header() {
   return (
@@ -11,14 +12,16 @@ export function Header() {
         alt="Coffee Delivery Logo (A cup of coffee with a rocket)"
       />
 
-      <div>
+      <nav>
         <Location>
           <MapPin weight="fill" /> Ouro Preto, MG
         </Location>
-        <Cart>
-          <ShoppingCart weight="fill" />
-        </Cart>
-      </div>
+        <Link to="/confirm-order">
+          <Cart>
+            <ShoppingCart weight="fill" />
+          </Cart>
+        </Link>
+      </nav>
     </HeaderContainer>
   )
 }

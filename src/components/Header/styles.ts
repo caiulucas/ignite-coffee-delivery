@@ -8,7 +8,7 @@ export const HeaderContainer = styled.header`
   padding: 2rem 1rem;
   margin: 0 auto;
 
-  div {
+  > nav {
     display: flex;
     gap: 1rem;
   }
@@ -18,6 +18,7 @@ const BadgeBase = styled.span`
   display: flex;
   padding: 0.625rem 0.5rem;
   border-radius: 6px;
+  height: 2.375rem;
 
   align-items: center;
   gap: 0.25rem;
@@ -36,6 +37,7 @@ export const Location = styled(BadgeBase)`
 export const Cart = styled(BadgeBase)`
   background-color: ${({ theme }) => theme['yellow-light']};
   color: ${({ theme }) => theme.yellow};
-  width: 3rem;
+  width: 2.375rem;
   justify-content: center;
+  cursor: pointer;
 `
