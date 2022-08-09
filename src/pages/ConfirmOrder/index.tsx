@@ -4,15 +4,11 @@ import {
   CurrencyDollar,
   MapPinLine,
   Money,
-  Trash,
 } from 'phosphor-react'
 import { useTheme } from 'styled-components'
-import ExpressoPng from '../../assets/expresso.png'
-import { Spinner } from '../../components/Spinner'
+import { useCart } from '../../contexts/CartContext'
+import { Coffee } from './components/Coffee'
 import {
-  Coffee,
-  CoffeeController,
-  CoffeeInfo,
   CoffeeList,
   ConfirmButton,
   ConfirmOrderContainer,
@@ -25,6 +21,7 @@ import {
 } from './styles'
 
 export function ConfirmOrder() {
+  const { cartList } = useCart()
   const theme = useTheme()
 
   return (
@@ -111,38 +108,13 @@ export function ConfirmOrder() {
 
         <SelectedCoffees>
           <CoffeeList>
-            <Coffee>
-              <CoffeeInfo>
-                <img src={ExpressoPng} alt="" />
-                <div>
-                  <p>Expresso Tradicional</p>
-                  <CoffeeController>
-                    <Spinner />
-                    <button>
-                      <Trash />
-                      Remover
-                    </button>
-                  </CoffeeController>
-                </div>
-              </CoffeeInfo>
-              <span>R$ 9,90</span>
-            </Coffee>
-            <Coffee>
-              <CoffeeInfo>
-                <img src={ExpressoPng} alt="" />
-                <div>
-                  <p>Expresso Tradicional</p>
-                  <CoffeeController>
-                    <Spinner />
-                    <button>
-                      <Trash />
-                      Remover
-                    </button>
-                  </CoffeeController>
-                </div>
-              </CoffeeInfo>
-              <span>R$ 9,90</span>
-            </Coffee>
+            {cartList.map((item) => (
+              <Coffee
+                key={item.coffee.id}
+                coffee={item.coffee}
+                quantity={item.quantity}
+              />
+            ))}
           </CoffeeList>
           <Pricing>
             <div>
