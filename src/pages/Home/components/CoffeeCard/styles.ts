@@ -88,6 +88,11 @@ export const BuyButton = styled.button`
   height: 2.375rem;
 
   color: ${({ theme }) => theme.white};
+  transition: all 0.2s;
+
+  &:hover {
+    background: ${({ theme }) => theme.purple};
+  }
 
   svg {
     width: 1.375rem;
