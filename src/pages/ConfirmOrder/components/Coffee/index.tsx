@@ -16,7 +16,7 @@ interface CoffeeProps {
 }
 
 export function Coffee({ coffee, quantity }: CoffeeProps) {
-  const { changeQuantity } = useCart()
+  const { changeQuantity, remove } = useCart()
 
   function handleChangeQuantity(newQuantity: number) {
     changeQuantity(coffee.id, newQuantity)
@@ -30,7 +30,7 @@ export function Coffee({ coffee, quantity }: CoffeeProps) {
           <p>{coffee.name}</p>
           <CoffeeController>
             <Spinner value={quantity} changeQuantity={handleChangeQuantity} />
-            <button>
+            <button onClick={() => remove(coffee.id)}>
               <Trash />
               Remover
             </button>
