@@ -1,24 +1,30 @@
 import { Cart, HeaderContainer, Location } from './styles'
 
-import LogoSvg from '../../assets/logo.svg'
 import { MapPin, ShoppingCart } from 'phosphor-react'
 import { Link } from 'react-router-dom'
+import LogoSvg from '../../assets/logo.svg'
+import { useAddress } from '../../contexts/AddressContext'
 import { useCart } from '../../contexts/CartContext'
 
 export function Header() {
   const { cartList } = useCart()
+  const { address } = useAddress()
 
   return (
     <HeaderContainer>
-      <img
-        src={LogoSvg}
-        alt="Coffee Delivery Logo (A cup of coffee with a rocket)"
-      />
+      <Link to="/">
+        <img
+          src={LogoSvg}
+          alt="Coffee Delivery Logo (A cup of coffee with a rocket)"
+        />
+      </Link>
 
       <nav>
-        <Location>
-          <MapPin weight="fill" /> Ouro Preto, MG
-        </Location>
+        {address && (
+          <Location>
+            <MapPin weight="fill" /> {address.city}, {address.uf}
+          </Location>
+        )}
         <Link to="/confirm-order">
           <Cart>
             <ShoppingCart weight="fill" />
