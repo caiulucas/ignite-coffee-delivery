@@ -1,5 +1,5 @@
 import { Minus, Plus } from 'phosphor-react'
-import { Size, SpinnerContainer } from './styles'
+import { Size, SpinnerContainer, Value } from './styles'
 
 interface SpinnerProps {
   size?: Size
@@ -13,7 +13,7 @@ export function Spinner({ size = 's', value, changeQuantity }: SpinnerProps) {
       <button disabled={!value} onClick={() => changeQuantity(value - 1)}>
         <Minus />
       </button>
-      <p>{value}</p>
+      <Value>{value}</Value>
       <button onClick={() => changeQuantity(value + 1)}>
         <Plus />
       </button>

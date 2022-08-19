@@ -23,15 +23,6 @@ export const SpinnerContainer = styled.div<SpinnerContainerProps>`
   background-color: ${({ theme }) => theme['base-button']};
   border-radius: 6px;
 
-  p {
-    margin: 0;
-    line-height: 0;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: ${({ theme }) => theme['base-title']};
-  }
-
   button {
     border: none;
     background: none;
@@ -52,4 +43,12 @@ export const SpinnerContainer = styled.div<SpinnerContainerProps>`
       height: 0.875rem;
     }
   }
+`
+
+export const Value = styled.p`
+  margin: 0;
+  line-height: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme['base-title']};
 `
