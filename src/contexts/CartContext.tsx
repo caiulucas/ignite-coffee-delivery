@@ -25,23 +25,44 @@ interface CartContextProps {
 
 const cartContext = createContext<CartContextProps>({} as CartContextProps)
 
+const storageKey = '@CoffeeDelivery:cartList'
+
 export function CartProvider({ children }: CartProviderProps) {
-  const [cartList, setCartList] = useState<CartItem[]>([])
+  const [cartList, setCartList] = useState<CartItem[]>(() => {
+    const localCartList = localStorage.getItem(storageKey)
+
+    if (localCartList) return JSON.parse(localCartList)
+
+    return []
+  })
 
   function add(coffee: Coffee, quantity: number) {
-    setCartList((oldState) => [...oldState, { coffee, quantity }])
+    setCartList((oldState) => {
+      const newState = [...oldState, { coffee, quantity }]
+      localStorage.setItem(storageKey, JSON.stringify(newState))
+
+      return newState
+    })
   }
 
   function remove(id: string) {
-    setCartList((oldState) => oldState.filter((item) => item.coffee.id !== id))
+    setCartList((oldState) => {
+      const newState = oldState.filter((item) => item.coffee.id !== id)
+      localStorage.setItem(storageKey, JSON.stringify(newState))
+
+      return newState
+    })
   }
 
   function changeQuantity(id: string, newQuantity: number) {
-    setCartList((oldState) =>
-      oldState.map((item) =>
+    setCartList((oldState) => {
+      const newState = oldState.map((item) =>
         item.coffee.id === id ? { ...item, quantity: newQuantity } : item,
-      ),
-    )
+      )
+      localStorage.setItem(storageKey, JSON.stringify(newState))
+
+      return newState
+    })
   }
 
   return (
