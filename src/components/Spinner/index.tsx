@@ -10,11 +10,15 @@ interface SpinnerProps {
 export function Spinner({ size = 's', value, changeQuantity }: SpinnerProps) {
   return (
     <SpinnerContainer size={size}>
-      <button disabled={!value} onClick={() => changeQuantity(value - 1)}>
+      <button
+        type="button"
+        disabled={!value}
+        onClick={() => changeQuantity(value - 1)}
+      >
         <Minus />
       </button>
       <Value>{value}</Value>
-      <button onClick={() => changeQuantity(value + 1)}>
+      <button type="button" onClick={() => changeQuantity(value + 1)}>
         <Plus />
       </button>
     </SpinnerContainer>
