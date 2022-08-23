@@ -2,8 +2,23 @@ import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
 import { ReviewOrderContainer, Info } from './styles'
 
 import DeliveryPng from '../../assets/delivery.png'
+import { useAddress } from '../../contexts/AddressContext'
+import { useLocation } from 'react-router-dom'
+
+const paymentMethods = {
+  credit: 'Cartão de crédito',
+  debit: 'Cartão de débito',
+  cash: 'Dinheiro',
+}
 
 export function ReviewOrder() {
+  const { address } = useAddress()
+  const { state } = useLocation()
+
+  const { paymentMethod } = state as {
+    paymentMethod: 'credit' | 'debit' | 'cash'
+  }
+
   return (
     <ReviewOrderContainer>
       <h1>Uhu! Pedido confirmado</h1>
@@ -18,9 +33,14 @@ export function ReviewOrder() {
               </span>
               <div>
                 <p>
-                  Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                  Entrega em{' '}
+                  <strong>
+                    {address?.street}, {address?.number}
+                  </strong>
                 </p>
-                <p>Farrapos - Porto Alegre, RS</p>
+                <p>
+                  {address?.neighborhood} - {address?.city}, {address?.uf}
+                </p>
               </div>
             </Info>
             <Info variant="yellow">
@@ -38,7 +58,7 @@ export function ReviewOrder() {
               </span>
               <div>
                 <p>Pagamento na entrega</p>
-                <p>Cartão de crédito</p>
+                <p>{paymentMethods[paymentMethod]}</p>
               </div>
             </Info>
           </div>
