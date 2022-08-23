@@ -1,3 +1,8 @@
+const formatter = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+})
+
 export function formatCurrency(value: number) {
-  return String(value).padEnd(4, '0').replace('.', ',')
+  return formatter.format(value)
 }
