@@ -30,14 +30,14 @@ export function Coffee({ coffee, quantity }: CoffeeProps) {
           <p>{coffee.name}</p>
           <CoffeeController>
             <Spinner value={quantity} changeQuantity={handleChangeQuantity} />
-            <button onClick={() => remove(coffee.id)}>
+            <button type="button" onClick={() => remove(coffee.id)}>
               <Trash />
               Remover
             </button>
           </CoffeeController>
         </div>
       </CoffeeInfo>
-      <span>R$ {formatCurrency(coffee.price)}</span>
+      <span>{formatCurrency(coffee.price)}</span>
     </CoffeeContainer>
   )
 }
