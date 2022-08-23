@@ -24,7 +24,7 @@ export const CoffeeContainer = styled.div`
     font-size: 1.25rem;
   }
 
-  p {
+  > p {
     margin-top: 0.5rem;
     color: ${({ theme }) => theme['base-label']};
     font-size: 0.875rem;
@@ -59,7 +59,7 @@ export const PricingContainer = styled.div`
 
   gap: 1.5rem;
 
-  p {
+  > p {
     font-family: 'Baloo 2', sans-serif;
     font-weight: 800;
     font-size: 1.5rem;
@@ -73,7 +73,7 @@ export const PricingContainer = styled.div`
     }
   }
 
-  div {
+  > div {
     display: flex;
     gap: 0.5rem;
   }
@@ -97,5 +97,12 @@ export const BuyButton = styled.button`
   svg {
     width: 1.375rem;
     height: 1.375rem;
+  }
+
+  &:disabled,
+  &:disabled:hover {
+    filter: brightness(75%);
+    background: ${({ theme }) => theme['purple-dark']};
+    cursor: not-allowed;
   }
 `
