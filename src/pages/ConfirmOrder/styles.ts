@@ -1,10 +1,6 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const ConfirmOrderContainer = styled.main`
-  display: grid;
-  grid-template-columns: 40rem 28rem;
-  gap: 2rem;
-
   h2 {
     font-size: 1.125rem;
     font-weight: 700;
@@ -12,9 +8,15 @@ export const ConfirmOrderContainer = styled.main`
   }
 
   form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    display: grid;
+    grid-template-columns: 40rem 28rem;
+    gap: 2rem;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
   }
 `
 
@@ -49,62 +51,48 @@ export const FormTitle = styled.div`
   }
 `
 
-export const FormBody = styled.div`
-  display: grid;
-  grid-template-columns: 12.5rem 17.25rem 3.75rem;
-  grid-template-areas:
-    'cep . .'
-    'street street street'
-    'number complement complement'
-    'neighborhood city uf';
-  gap: 1rem;
-
-  margin-top: 2rem;
-
-  input {
-    border: 1px solid ${({ theme }) => theme['base-button']};
-    border-radius: 4px;
-
-    background-color: ${({ theme }) => theme['base-input']};
-    color: ${({ theme }) => theme['base-text']};
-    padding: 0.75rem;
-    font-size: 0.875rem;
-
-    &::placeholder {
-      color: ${({ theme }) => theme['base-label']};
-    }
-
-    &:focus {
-      outline: 1px solid ${({ theme }) => theme['yellow-dark']};
-    }
-  }
-`
 export const PaymentMethod = styled.div`
   margin-top: 2rem;
   display: flex;
 
   justify-content: space-between;
   gap: 0.75rem;
+`
 
-  button {
-    border: none;
-    background-color: ${({ theme }) => theme['base-button']};
+interface PaymentMethodButtonProps {
+  selected?: boolean
+}
 
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    text-transform: uppercase;
-    gap: 0.75rem;
-    font-size: 0.75rem;
-    border-radius: 6px;
+export const PaymentMethodButton = styled.button<PaymentMethodButtonProps>`
+  width: 100%;
+  border: none;
+  ${({ theme, selected }) =>
+    selected &&
+    css`
+      outline: 1px solid ${theme.purple};
+    `}
+  background-color: ${({ theme }) => theme['base-button']};
 
-    color: ${({ theme }) => theme['base-text']};
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 6px;
 
-    svg {
-      width: 1rem;
-      height: 1rem;
-      color: ${({ theme }) => theme.purple};
-    }
+  color: ${({ theme }) => theme['base-text']};
+
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: ${({ theme }) => theme['base-hover']};
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    color: ${({ theme }) => theme.purple};
   }
 `
 
@@ -153,4 +141,16 @@ export const ConfirmButton = styled.button`
 
   border: none;
   border-radius: 6px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: ${({ theme }) => theme['yellow-dark']};
+  }
+
+  &:disabled,
+  &:disabled:hover {
+    cursor: not-allowed;
+    filter: brightness(75%);
+    background-color: ${({ theme }) => theme.yellow};
+  }
 `

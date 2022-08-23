@@ -1,78 +1,82 @@
-import {
-  Bank,
-  CreditCard,
-  CurrencyDollar,
-  MapPinLine,
-  Money,
-} from 'phosphor-react'
-import { useTheme } from 'styled-components'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useCart } from '../../contexts/CartContext'
 import { Coffee } from './components/Coffee'
+import { Form } from './components/Form'
 import {
   CoffeeList,
   ConfirmButton,
   ConfirmOrderContainer,
-  FormBody,
   FormContainer,
   FormTitle,
   PaymentMethod,
+  PaymentMethodButton,
   Pricing,
   SelectedCoffees,
 } from './styles'
 
+import { Bank, CreditCard, CurrencyDollar, Money } from 'phosphor-react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useTheme } from 'styled-components'
+import * as zod from 'zod'
+import { Address, useAddress } from '../../contexts/AddressContext'
+import { formatCurrency } from '../../utils/formatCurrency'
+
+const addressFormValidationSchema = zod.object({
+  cep: zod.string().min(1, 'Informe o CEP!'),
+  street: zod.string().min(1, 'Informe a rua!'),
+  number: zod.number().min(1, 'Informe o número!'),
+  complement: zod.string(),
+  neighborhood: zod.string().min(1, 'Informe o bairro!'),
+  city: zod.string().min(1, 'Informe a cidade!'),
+  uf: zod
+    .string()
+    .min(2, 'Informe a UF')
+    .max(2, 'Uma UF contém apenas duas letras!'),
+})
+
+type AddressFormData = typeof addressFormValidationSchema
+
+const deliveryTax = 3.5
+
 export function ConfirmOrder() {
+  const { saveAddress, address } = useAddress()
+  const addressForm = useForm<AddressFormData>({
+    defaultValues: address as any as AddressFormData,
+    resolver: zodResolver(addressFormValidationSchema),
+  })
   const { cartList } = useCart()
   const theme = useTheme()
+  const navigate = useNavigate()
+
+  const { handleSubmit, watch } = addressForm
+
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('')
+
+  const isSubmitDisabled = !watch() || !selectedPaymentMethod
+
+  const cartTotal = cartList.reduce((acc, item) => {
+    acc += item.coffee.price * item.quantity
+    return acc
+  }, 0)
+
+  function handleCreateOrder(data: AddressFormData) {
+    saveAddress(data as any as Address)
+    navigate('/review-order', {
+      state: { paymentMethod: selectedPaymentMethod },
+    })
+  }
 
   return (
     <ConfirmOrderContainer>
-      <div>
-        <h2>Confirme seu pedido</h2>
-        <form>
-          <FormContainer>
-            <FormTitle>
-              <MapPinLine />
-              <div>
-                <h3>Endereço de entrega</h3>
-                <p>Informe o endereço onde deseja receber seu pedido</p>
-              </div>
-            </FormTitle>
+      <form onSubmit={handleSubmit(handleCreateOrder)}>
+        <div>
+          <h2>Confirme seu pedido</h2>
 
-            <FormBody>
-              <input
-                type="text"
-                placeholder="CEP"
-                style={{ gridArea: 'cep' }}
-              />
-              <input
-                type="text"
-                placeholder="Rua"
-                style={{ gridArea: 'street' }}
-              />
-              <input
-                type="number"
-                placeholder="Número"
-                style={{ gridArea: 'number' }}
-              />
-              <input
-                type="text"
-                placeholder="Complemento"
-                style={{ gridArea: 'complement' }}
-              />
-              <input
-                type="text"
-                placeholder="Bairro"
-                style={{ gridArea: 'neighborhood' }}
-              />
-              <input
-                type="text"
-                placeholder="Cidade"
-                style={{ gridArea: 'city' }}
-              />
-
-              <input type="text" placeholder="UF" style={{ gridArea: 'uf' }} />
-            </FormBody>
-          </FormContainer>
+          <FormProvider {...addressForm}>
+            <Form />
+          </FormProvider>
 
           <FormContainer>
             <FormTitle>
@@ -87,53 +91,76 @@ export function ConfirmOrder() {
             </FormTitle>
 
             <PaymentMethod>
-              <button>
+              <PaymentMethodButton
+                type="button"
+                selected={selectedPaymentMethod === 'credit'}
+                onClick={() => setSelectedPaymentMethod('credit')}
+              >
                 <CreditCard />
                 Cartão de crédito
-              </button>
-              <button>
+              </PaymentMethodButton>
+              <PaymentMethodButton
+                type="button"
+                selected={selectedPaymentMethod === 'debit'}
+                onClick={() => setSelectedPaymentMethod('debit')}
+              >
                 <Bank />
-                Cartão de crédito
-              </button>
-              <button>
+                Cartão de débito
+              </PaymentMethodButton>
+              <PaymentMethodButton
+                type="button"
+                selected={selectedPaymentMethod === 'cash'}
+                onClick={() => setSelectedPaymentMethod('cash')}
+              >
                 <Money />
-                Cartão de crédito
-              </button>
+                Dinheiro
+              </PaymentMethodButton>
             </PaymentMethod>
           </FormContainer>
-        </form>
-      </div>
-      <div>
-        <h2>Cafés selecionados</h2>
+        </div>
+        <div>
+          <h2>Cafés selecionados</h2>
 
-        <SelectedCoffees>
-          <CoffeeList>
-            {cartList.map((item) => (
-              <Coffee
-                key={item.coffee.id}
-                coffee={item.coffee}
-                quantity={item.quantity}
-              />
-            ))}
-          </CoffeeList>
-          <Pricing>
-            <div>
-              <p>Total de itens</p>
-              <p>R$ 29,70</p>
-            </div>
-            <div>
-              <p>Entrega</p>
-              <p>R$ 3,50</p>
-            </div>
-            <div>
-              <span>Total</span>
-              <span>R$ 33,20</span>
-            </div>
-
-            <ConfirmButton>Confirmar Pedido</ConfirmButton>
-          </Pricing>
-        </SelectedCoffees>
-      </div>
+          <SelectedCoffees>
+            <CoffeeList>
+              {cartList.map((item) => (
+                <Coffee
+                  key={item.coffee.id}
+                  coffee={item.coffee}
+                  quantity={item.quantity}
+                />
+              ))}
+            </CoffeeList>
+            <Pricing>
+              {cartList.length ? (
+                <>
+                  <div>
+                    <p>Total de itens</p>
+                    <p>{formatCurrency(cartTotal)}</p>
+                  </div>
+                  <div>
+                    <p>Entrega</p>
+                    <p>{formatCurrency(deliveryTax)}</p>
+                  </div>
+                  <div>
+                    <span>Total</span>
+                    <span>{formatCurrency(cartTotal + deliveryTax)}</span>
+                  </div>
+                  <ConfirmButton type="submit" disabled={isSubmitDisabled}>
+                    Confirmar Pedido
+                  </ConfirmButton>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p>Que pena! Nenhum café selecionado no momento</p>
+                  </div>
+                </>
+              )}
+            </Pricing>
+          </SelectedCoffees>
+        </div>
+      </form>
     </ConfirmOrderContainer>
   )
 }
