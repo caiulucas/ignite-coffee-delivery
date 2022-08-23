@@ -38,6 +38,8 @@ export function CoffeeCard({ coffee }: CoffeeCardProps) {
     setQuantity(value)
   }
 
+  const priceFormatted = formatCurrency(coffee.price).replace('R$', '')
+
   return (
     <CoffeeContainer>
       <img src={coffee.image} alt={coffee.name} />
@@ -53,8 +55,8 @@ export function CoffeeCard({ coffee }: CoffeeCardProps) {
 
       <PricingContainer>
         <p>
-          <span>R$ </span>
-          {formatCurrency(coffee.price)}
+          <span>R$</span>
+          {priceFormatted}
         </p>
 
         <div>
@@ -63,7 +65,11 @@ export function CoffeeCard({ coffee }: CoffeeCardProps) {
             value={quantity}
             changeQuantity={handleChangeQuantity}
           />
-          <BuyButton onClick={handleAddCoffee}>
+          <BuyButton
+            type="button"
+            onClick={handleAddCoffee}
+            disabled={!quantity}
+          >
             <ShoppingCart weight="fill" />
           </BuyButton>
         </div>
